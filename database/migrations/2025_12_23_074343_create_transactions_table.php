@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Category::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(Category::class)->nullable()->constrained()->nullOnDelete();
             $table->date('date');
             $table->string('description');
             $table->text('notes')->nullable();

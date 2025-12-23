@@ -27,7 +27,7 @@ class TransactionFactory extends Factory
             'date' => $this->faker->dateTimeThisYear(),
             'description' => $this->faker->sentence(),
             'notes' => $this->faker->sentence(),
-            'type' => $transactionType,
+            'transaction_type' => $transactionType,
             'amount' => $this->faker->randomFloat(2, 10, 2000),
         ];
     }
