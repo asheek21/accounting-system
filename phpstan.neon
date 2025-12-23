@@ -1,0 +1,23 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+    paths:
+        - app
+        - bootstrap/app.php
+        - database
+        - routes
+
+    level: 5
+
+    excludePaths:
+        - bootstrap/*
+        - storage/*
+        - public/*
+
+    inferPrivatePropertyTypeFromConstructor: true
+    treatPhpDocTypesAsCertain: false
+
+    tmpDir: /tmp/phpstan

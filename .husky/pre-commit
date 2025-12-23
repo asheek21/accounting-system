@@ -1,0 +1,13 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run Pint to fix formatting
+echo "🔧 Running Pint..."
+vendor/bin/pint --dirty
+
+git add .
+
+echo "🧐 Running Larastan..."
+vendor/bin/phpstan analyse --no-interaction || exit 1
+
+echo "✅ Passed: Pint + Larastan"
