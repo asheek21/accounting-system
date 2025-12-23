@@ -26,4 +26,9 @@ class AccountTable implements DataTableInterface
     {
         return ['account_name'];
     }
+
+    public function filterableColumns(): array
+    {
+        return [];
+    }
 }

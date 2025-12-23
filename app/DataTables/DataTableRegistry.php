@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\DataTables\Contracts\DataTableInterface;
+use App\DataTables\Contracts\ExportableColumnInterface;
 use InvalidArgumentException;
 
 /**
@@ -36,5 +37,16 @@ class DataTableRegistry
         }
 
         return app($this->tables[$type]);
+    }
+
+    public function columns(string $type): array
+    {
+        $handler = $this->resolve($type);
+
+        if ($handler instanceof ExportableColumnInterface) {
+            return $handler->columns();
+        }
+
+        return [];
     }
 }

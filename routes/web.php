@@ -1,6 +1,7 @@
 <?php
 
 use App\DataTables\Controllers\DataTableController;
+use App\DataTables\Controllers\DataTableExportController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -18,9 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('account', AccountController::class)->only('index');
     Route::resource('category', CategoryController::class)->only('index');
-    Route::resource('transactions', TransactionController::class);
+    Route::resource('transactions', TransactionController::class)->only(['index', 'destroy']);
 
     Route::get('/data-table', DataTableController::class)->name('data-table');
+    Route::get('data-table/export', DataTableExportController::class)->name('data-table.export');
 
     Route::redirect('/', route('dashboard.index', absolute: false))->name('home');
 });

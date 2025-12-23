@@ -14,19 +14,9 @@ trait DataTableResponse
     protected function dataTableResponse(
         Builder $query,
         Request $request,
-        array $searchableColumns = [],
         array $orderby = []
     ): JsonResponse {
         // Apply search filter
-        if ($request->has('search') && ! empty($request->search)) {
-            $search = $request->search;
-            $query->where(function ($q) use ($searchableColumns, $search) {
-                foreach ($searchableColumns as $column) {
-                    $q->orWhere($column, 'like', "%{$search}%");
-                }
-            });
-        }
-
         if (! empty($orderby)) {
             $query->orderBy($orderby[0], $orderby[1]);
         } else {
@@ -48,5 +38,77 @@ trait DataTableResponse
             'from' => $results->firstItem() ?? 0,
             'to' => $results->lastItem() ?? 0,
         ]);
+    }
+
+    protected function applyFilters(
+        Builder $query,
+        Request $request,
+        array $filterableColumns = []
+    ): Builder {
+        foreach ($filterableColumns as $column => $type) {
+
+            if ($type === 'daterange') {
+                $from = $request->input($column.'_from');
+                $to = $request->input($column.'_to');
+
+                $value = ! empty($from) || ! empty($to) ? true : false;
+            } else {
+                $value = $request->input($column);
+            }
+
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            switch ($type) {
+                case 'exact':
+                    $query->where($column, $value);
+                    break;
+
+                case 'like':
+                    $query->where($column, 'like', "%{$value}%");
+                    break;
+
+                case 'date':
+                    $query->whereDate($column, $value);
+                    break;
+
+                case 'daterange':
+                    $from = $request->input("{$column}_from");
+                    $to = $request->input("{$column}_to");
+
+                    if ($from) {
+                        $query->whereDate($column, '>=', $from);
+                    }
+                    if ($to) {
+                        $query->whereDate($column, '<=', $to);
+                    }
+
+                    break;
+
+                default:
+                    $query->where($column, $value);
+            }
+        }
+
+        return $query;
+    }
+
+    protected function applySearch(
+        Builder $query,
+        Request $request,
+        array $searchableColumns = []
+    ): Builder {
+
+        if ($request->has('search') && ! empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($searchableColumns, $search) {
+                foreach ($searchableColumns as $column) {
+                    $q->orWhere($column, 'like', "%{$search}%");
+                }
+            });
+        }
+
+        return $query;
     }
 }

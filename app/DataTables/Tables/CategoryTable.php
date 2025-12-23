@@ -27,4 +27,9 @@ class CategoryTable implements DataTableInterface
     {
         return ['category_name'];
     }
+
+    public function filterableColumns(): array
+    {
+        return [];
+    }
 }

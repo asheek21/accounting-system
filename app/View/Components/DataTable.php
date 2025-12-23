@@ -14,7 +14,9 @@ class DataTable extends Component
         public string $type,
         public string $emptyMessage = 'No data found.',
         public bool $searchable = true,
-        public int $perPage = 10
+        public int $perPage = 10,
+        public array $filters = [],
+        public bool $exportable = false,
     ) {}
 
     /**

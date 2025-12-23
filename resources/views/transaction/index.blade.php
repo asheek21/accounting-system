@@ -46,11 +46,40 @@
                                     <button onclick=\'deleteAccount({value})\' class=\'text-danger hover:text-danger-dark\'>Delete</button>
                                 </div>',
                 ],
-
             ]"
+            :filters="[
+                [
+                    'type' => 'select',
+                    'name' => 'transaction_type',
+                    'label' => 'Transaction Type',
+                    'placeholder' => 'All Types',
+                    'options' => $transactionTypes,
+                ],
+                [
+                    'type' => 'select',
+                    'name' => 'account_id',
+                    'label' => 'Account',
+                    'placeholder' => 'All Accounts',
+                    'options' => $accounts,
+                ],
+                [
+                    'type' => 'select',
+                    'name' => 'category_id',
+                    'label' => 'Category',
+                    'placeholder' => 'All Categories',
+                    'options' => $categories,
+                ],
+                [
+                    'type' => 'daterange',
+                    'name' => 'date',
+                    'label' => 'Date Range',
+                ]
+            ]"   
+            :exportable="true"           
             :searchable="true"
-            :per-page="10">
-            Accounts List
+            :per-page="10"
+        >
+            Transactions
         </x-data-table>
     </div>
 

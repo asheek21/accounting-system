@@ -9,4 +9,6 @@ interface DataTableInterface
     public function query(): Builder;
 
     public function searchableColumns(): array;
+
+    public function filterableColumns(): array;
 }

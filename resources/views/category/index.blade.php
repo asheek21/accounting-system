@@ -26,7 +26,7 @@
             ]"
             :searchable="true"
             :per-page="10">
-            Accounts List
+            Categories
         </x-data-table>
     </div>
 </x-app-layout>
