@@ -5,8 +5,13 @@ use App\DataTables\Controllers\DataTableExportController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseStatController;
+use App\Http\Controllers\ExpenseStatExportController;
+use App\Http\Controllers\IncomeStatController;
+use App\Http\Controllers\IncomeStatExportController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LoginShowController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +25,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('account', AccountController::class)->only('index');
     Route::resource('category', CategoryController::class)->only('index');
     Route::resource('transactions', TransactionController::class)->only(['index', 'destroy']);
+    Route::resource('reports', ReportController::class)->only('index');
+
+    Route::group(['prefix' => 'reports/income', 'as' => 'reports.income.'], function () {
+        Route::get('stats', IncomeStatController::class)->name('stats');
+        Route::get('export', IncomeStatExportController::class)->name('export');
+    });
+
+    Route::group(['prefix' => 'reports/expense', 'as' => 'reports.expense.'], function () {
+        Route::get('stats', ExpenseStatController::class)->name('stats');
+        Route::get('export', ExpenseStatExportController::class)->name('export');
+    });
 
     Route::get('/data-table', DataTableController::class)->name('data-table');
     Route::get('data-table/export', DataTableExportController::class)->name('data-table.export');
