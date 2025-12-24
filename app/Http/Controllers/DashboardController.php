@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DashboardService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,12 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(DashboardService $service): View
     {
-        return view('dashboard.index');
+        $dashBoardData = $service->getDashboardData();
+
+        // dd($dashBoardData['recentTransactions'] );
+        return view('dashboard.index', $dashBoardData);
     }
 
     /**
